@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+build
+.env
+.env.*
+.git
+.gitignore
+*.md
+server/
+.DS_Store
+src/setupTests.js
+src/App.test.js

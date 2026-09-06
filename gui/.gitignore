@@ -1,0 +1,20 @@
+.vscode/c_cpp_properties.json
+
+# Environment variables (secrets)
+.env
+.env.local
+.env.*.local
+guad-gui/.env
+guad-gui/server/.env
+
+# Node modules
+**/node_modules/
+
+# Build output
+**/build/
+
+# OS files
+.DS_Store
+
+# Docker
+*.log

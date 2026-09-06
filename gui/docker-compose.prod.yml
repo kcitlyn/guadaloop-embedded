@@ -1,0 +1,52 @@
+# ──────────────────────────────────────────────────────────────────
+# Production Docker Compose - for running on ANY device
+# Uses pre-built images from GitHub Container Registry (GHCR)
+# No source code needed - just this file + .env
+# ──────────────────────────────────────────────────────────────────
+#
+# USAGE:
+#   1. Copy this file and .env.docker.example to the target device
+#   2. Rename .env.docker.example to .env
+#   3. Fill in your MONGODB_URI in .env
+#   4. Run: docker compose -f docker-compose.prod.yml up -d
+#
+# ──────────────────────────────────────────────────────────────────
+
+version: '3.8'
+
+services:
+  backend:
+    image: ghcr.io/texasguadaloop-softwarecomms/guad-backend:latest
+    container_name: guad-backend
+    ports:
+      - "${BACKEND_PORT:-5001}:5001"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - DB_NAME=${DB_NAME:-guad_pod}
+      - PORT=5001
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - guad-network
+
+  frontend:
+    image: ghcr.io/texasguadaloop-softwarecomms/guad-frontend:latest
+    container_name: guad-frontend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - guad-network
+
+networks:
+  guad-network:
+    driver: bridge

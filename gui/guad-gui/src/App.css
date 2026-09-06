@@ -1,0 +1,977 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-weight: 400;
+  height: 100vh;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+/* Header */
+.navbar-top {
+  background-color: #000000;
+  border-bottom: 1px solid #1f2937;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-btn {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2rem;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.sidebar-toggle-btn:active {
+  background-color: #4b5563;
+  transform: scale(0.95);
+}
+
+/* Content areas */
+.content,
+.side-panel {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.side-panel {
+  background-color: #000000;
+  padding: 1rem;
+  overflow-y: auto;
+  border-left: 1px solid #1f2937;
+  width: 400px;
+  position: fixed;
+  right: 0;
+  top: 3rem;
+  bottom: 0;
+  z-index: 100;
+  box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.5);
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.side-panel.hidden {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cards */
+.sensor-data-section,
+.console {
+  background-color: #000000;
+  border: 1px solid #1f2937;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.console {
+  margin-top: auto;
+  height: 80px;
+  overflow-y: auto;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  width: 100%;
+  font-size: 0.65rem;
+  color: #d1d5db;
+  line-height: 1.2;
+}
+
+.main-content {
+  flex: 2;
+  /* Takes 2/3 of the space */
+  padding: 10px;
+}
+
+/* Style adjustments for buttons, tables, etc., can follow from here */
+/* Ensure button, tab, table, and other component styles are correctly applied */
+
+/* Ensure tab content visibility */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active-tab-content {
+  display: block;
+  /* For contrast */
+  padding: 0px;
+  margin-top: 0px;
+}
+
+.logo {
+  height: 24px;
+  padding: 0.25rem;
+}
+
+/* Buttons - Treasury.sh style */
+button {
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.375rem 0.75rem;
+  margin: 0.25rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+/* Tab buttons */
+.tabs button {
+  background-color: #111827;
+  color: #9ca3af;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tabs button:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.tabs button.active {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.pod-image {
+  width: 100%;
+  /* Or the width you want */
+  height: auto;
+  /* Maintain aspect ratio */
+}
+
+.status-overlay {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent white */
+  padding: 5px;
+  border-radius: 5px;
+  /* Add more styling as needed */
+}
+
+/* Container and layout */
+.container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 3rem);
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0.75rem;
+  padding-right: 420px;
+  overflow-y: auto;
+  max-height: 100%;
+  width: 100%;
+}
+
+/* Typography */
+.console h4,
+p {
+  font-size: 0.75rem;
+  margin: 0.25rem 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.sensor-data-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.sensor-data-section h5 {
+  padding: 0;
+  margin: 0.75rem 0 0.5rem 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Tab and Tab Content Styling */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.tab-content {
+  display: none;
+}
+
+.active-tab-content {
+  display: block;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid #1f2937;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.75rem;
+  color: #d1d5db;
+}
+
+th {
+  background-color: #000000;
+  color: #9ca3af;
+  font-weight: 500;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:hover {
+  background-color: #0a0a0a;
+}
+
+tr:nth-child(even) {
+  background-color: #000000;
+}
+
+
+/* Responsive Design Adjustments */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .main-content,
+  .side-panel {
+    flex-basis: 100%;
+  }
+}
+
+.sensors-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.allbarsdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  flex: 1;
+  max-width: 100%;
+}
+
+/* Gap Height Sensors */
+.gapHeightBarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 70px;
+  width: 22px;
+  border: 1px solid #1f2937;
+  position: relative;
+  margin: 0 4px;
+  background-color: #111827;
+  border-radius: 0.25rem;
+}
+
+.labelSide {
+  position: absolute;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  left: -25px;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  font-size: 0.65rem;
+  color: #9ca3af;
+}
+
+.valueIndicator {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.barsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+}
+
+.movingBar {
+  width: 100%;
+  height: 4px;
+  background-color: #ffffff;
+  position: absolute;
+  transition: top 0.3s ease, background-color 0.3s ease;
+}
+
+/* Numeric columns */
+.numeric-column {
+  min-width: 40px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Disconnected banner */
+.disconnected-banner {
+  background-color: #7f1d1d;
+  color: #f87171;
+  padding: 0.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #991b1b;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* Button section layout */
+.button-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 350px;
+  margin-bottom: 2rem;
+}
+
+.button-section button {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.emergency-stop-btn {
+  background-color: #dc2626 !important;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem !important;
+  padding: 1.5rem 2rem !important;
+  border: 2px solid #991b1b;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.6),
+              0 0 40px rgba(220, 38, 38, 0.4),
+              0 0 60px rgba(220, 38, 38, 0.2);
+  animation: pulse-red 2s infinite;
+  transition: all 0.3s ease;
+}
+
+.emergency-stop-btn:hover {
+  background-color: #b91c1c !important;
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.8),
+              0 0 50px rgba(220, 38, 38, 0.6),
+              0 0 80px rgba(220, 38, 38, 0.4);
+  transform: scale(1.02);
+}
+
+.emergency-stop-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.7),
+              0 0 30px rgba(220, 38, 38, 0.5);
+}
+
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.6),
+                0 0 40px rgba(220, 38, 38, 0.4),
+                0 0 60px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.8),
+                0 0 50px rgba(220, 38, 38, 0.6),
+                0 0 80px rgba(220, 38, 38, 0.4);
+  }
+}
+
+/* Hero section layout */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 2rem;
+}
+
+/* State pills - Treasury style time buttons */
+.state-pills-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  background-color: #000000;
+  border-radius: 0.5rem;
+  border: 1px solid #1f2937;
+  width: 100%;
+}
+
+.state-pills-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.375rem;
+  width: 100%;
+}
+
+.state-pill {
+  padding: 0.375rem 0.75rem;
+  color: #9ca3af;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: transparent;
+}
+
+.state-pill.active {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.state-change-button {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+}
+
+
+/* Columns layout */
+.half1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 100%;
+}
+
+.col1 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 320px;
+}
+
+.col2 {
+  display: flex;
+  flex: 1.5;
+  flex-direction: column;
+  padding: 0;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 320px;
+}
+
+.col3 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 300px;
+  max-width: 450px;
+}
+
+/* Pod image and status */
+.pod-image-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 400px;
+  position: fixed;
+  right: 1rem;
+  top: 10rem;
+  padding: 2rem;
+  z-index: 50;
+  pointer-events: none; /* Allow clicks to pass through to elements below */
+}
+
+.pod-image {
+  width: 100%;
+  max-width:320px;
+  height: auto;
+  filter: brightness(0.95);
+  pointer-events: auto; /* Re-enable pointer events for the image itself */
+}
+
+.pod-status-grid {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #1f2937;
+  width: auto;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Status indicators */
+.status-indicator {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.status-indicator.ok {
+  background-color: #4ade80;
+}
+
+.status-indicator.error {
+  background-color: #f87171;
+}
+
+.status-indicator.warning {
+  background-color: #fbbf24;
+}
+
+
+/* Speed and acceleration section */
+.speed-acceleration-section {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem;
+  background-color: #000000;
+  border: 1px solid #1f2937;
+  border-radius: 0.5rem;
+}
+
+.progress-bars {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+/* Progress bars - Large number display */
+.progress-bar {
+  flex: 1;
+  margin: 0 0.5rem;
+  text-align: center;
+}
+
+.progress-bar h5 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.progress-bar .unit {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+.error-rectangle {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.error-rectangle.grey {
+  background-color: #ccc;
+}
+
+.error-rectangle.red {
+  background-color: #ffcccc;
+  border-color: #ff0000;
+}
+
+.error-message {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #ff0000;
+}
+
+/* Utility classes for Treasury.sh style */
+.text-green {
+  color: #4ade80;
+}
+
+.text-red {
+  color: #f87171;
+}
+
+.text-gray {
+  color: #9ca3af;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* Smooth transitions */
+button,
+a,
+.state-pill {
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Top middle section - side by side containers */
+.top-middle-section {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.top-middle-section .speed-acceleration-section,
+.top-middle-section .sensor-data-section {
+  flex: 1;
+  max-width: 360px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0;
+  text-align: center;
+}
+
+.top-middle-section .sensor-data-section {
+  justify-content: flex-start;
+}
+
+.top-middle-section .sensor-data-section h5 {
+  margin-top: 3.2rem;
+  margin-bottom: .5rem;
+}
+
+.top-middle-section .sensor-data-section .barsContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem;
+  width: 100%;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+}
+
+/* Temperature Sensors Grid */
+.temperature-grid-section {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  width: 100%;
+}
+
+.temp-sensors-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  justify-content: space-between;
+}
+
+.hub-section {
+  flex: 1;
+  background: #000000;
+  border: 1px solid #1f2937;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  min-width: 0;
+}
+
+.hub-section h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.temp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.temp-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25rem;
+  background: #000000;
+  border: 1px solid #1f2937;
+  border-radius: 0.25rem;
+}
+
+.temp-label {
+  font-size: 0.625rem;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.temp-value {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Hall Effect Sensors Sections */
+.hall-hub-section {
+  margin-top: 0.75rem;
+}
+
+.hall-hub-section:first-child {
+  margin-top: 0.5rem;
+}
+
+.hall-hub-section h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hall-hub-section table {
+  margin-bottom: 0.5rem;
+}
+
+.hall-hub-section table:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+  /* Let the page scroll vertically */
+  body, html {
+    overflow: auto;
+  }
+
+  .App {
+    overflow: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .container {
+    flex-direction: column;
+    overflow: auto;
+    height: auto;
+    min-height: calc(100vh - 3rem);
+  }
+
+  /* Remove the sidebar padding on main content */
+  .main-content {
+    padding-right: 0.75rem;
+    overflow: visible;
+    max-height: none;
+  }
+
+  /* Sidebar: full-width overlay */
+  .side-panel {
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 3rem;
+    bottom: 0;
+    box-shadow: none;
+  }
+
+  /* Hide the pod image on mobile — it blocks content */
+  .pod-image-container {
+    display: none;
+  }
+
+  /* Stack columns vertically */
+  .half1 {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .col1, .col2, .col3 {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .col1 {
+    align-items: stretch;
+  }
+
+  .button-section {
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Stack speed/acceleration and gap height vertically */
+  .top-middle-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .top-middle-section .speed-acceleration-section,
+  .top-middle-section .sensor-data-section {
+    max-width: 100%;
+    min-height: auto;
+  }
+
+  /* Stack temperature hubs vertically */
+  .temp-sensors-grid {
+    flex-direction: column;
+  }
+
+  /* State pills wrap nicely */
+  .state-pills-bar {
+    gap: 0.25rem;
+  }
+
+  .state-pill {
+    font-size: 0.55rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Hero section stack */
+  .hero-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Tabs scroll if needed */
+  .tabs {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .tabs button {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Console wider */
+  .console {
+    width: 100%;
+  }
+
+  /* Progress bar sizing */
+  .progress-bar {
+    margin: 0 0.25rem;
+  }
+
+  /* Normalize emergency stop and file writer buttons to same size */
+  .emergency-stop-btn {
+    font-size: 0.875rem !important;
+    padding: 0.75rem 1rem !important;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .emergency-stop-btn:hover {
+    box-shadow: none;
+  }
+
+  .button-section button {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
