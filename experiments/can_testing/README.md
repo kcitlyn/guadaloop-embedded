@@ -27,6 +27,65 @@ of a 32-bit filter register, so the ID has to be shifted into place.
 
 ---
 
+## Read this before you plug anything in
+
+Two things will waste your afternoon if you don't know them up front.
+
+### 1. The sender's ID does not match either receiver's filter
+
+Board A transmits **only** `TxHeaderWireless`, which is **`0x7E5`**. The sends
+using `TxHeaderB` (`0x7E3`) and `TxHeaderC` (`0x7E4`) are commented out:
+
+```c
+st = HAL_CAN_AddTxMessage(&hcan1, &TxHeaderWireless, TxData, &mailbox);   // 0x7E5
+//  HAL_CAN_AddTxMessage(&hcan1, &TxHeaderB, TxData, &TxMailbox);         // 0x7E3
+//  HAL_CAN_AddTxMessage(&hcan1, &TxHeaderC, TxData, &TxMailbox);         // 0x7E4
+```
+
+But the receivers filter for exactly one ID each, with a full `0x7FF` mask:
+
+```c
+sFilter.FilterIdHigh     = 0x7E3 << 5;   // B — accepts ONLY 0x7E3
+sFilter.FilterMaskIdHigh = 0x7FF << 5;   // every ID bit must match
+```
+
+**So neither B nor C will accept anything A sends.** `RxData` stays all zeros and
+`RxIndex` stays `0`.
+
+The cruel part: **board A will still report success.** On CAN, every node on the
+bus acknowledges a frame at the bit level *before* acceptance filtering is
+applied. So A sees `canErr == HAL_CAN_ERROR_NONE` — a correctly wired bus with a
+listening partner — while the receiver appears completely dead. That looks like a
+wiring fault and is not one.
+
+For first bring-up, make the receiver accept everything:
+
+```c
+sFilter.FilterIdHigh     = 0x0000;
+sFilter.FilterMaskIdHigh = 0x0000;   // mask 0 = don't care = accept all IDs
+```
+
+Once frames are arriving, put the filter back and align the IDs deliberately.
+
+### 2. Nothing prints and no LED blinks
+
+`CAN_Communication_Setup.md` in this folder promises UART terminal output and
+alternating LEDs. **Neither exists in this code.** The only `printf` in any of the
+three projects is a commented-out example inside `assert_failed()`. UART2 is
+initialised at 115200 but never written to, and `HAL_GPIO_TogglePin` appears
+nowhere.
+
+Both receivers' main loop is, in full:
+
+```c
+while (1) { int k = 0; }
+```
+
+**Verification is entirely through the debugger.** That is how this was originally
+tested, and the two `.launch` configs in this folder are the ones the authors used.
+
+---
+
 ## Current state: what has and has not been tested
 
 The upstream history is unusually honest, and it matters:
