@@ -6,6 +6,7 @@ the pod needs.
 
 | Directory | Why it matters |
 |---|---|
+| `can_testing/` | CAN bring-up. **Only on this branch.** Unfinished — the three boards disagree on bit timing. Read its README first. |
 | `center_hub_variants/` | Two divergent center-hub firmwares. **Read before editing center hub.** |
 | `hall_effect_f411/` | Cleanest ADC + DMA example. Different MCU (F411) — cannot be copied directly. |
 | `sensor_packing_prototype/` | Host-side CAN payload packing model. Compiles with `gcc`, runs on a laptop. |
@@ -14,15 +15,11 @@ the pod needs.
 
 Each directory has its own README explaining what it does and what is wrong with it.
 
-## Not on this branch
+## This is the `can-testing` branch
 
-**CAN bring-up lives on the `can-testing` branch**, not `main`. It is unfinished:
-the three test projects are not consistent with each other, and the newest commit
-desynchronised their bit timing after the last verified test.
+`experiments/can_testing/` exists here and **not on `main`**, deliberately. The
+bring-up is unfinished: the newest upstream commit changed board A's bit timing
+alone, after the last verified test, leaving the three boards inconsistent.
 
-```bash
-git checkout can-testing        # experiments/can_testing/
-```
-
-Its README explains what was actually verified and what was not. Nothing there is
-ready to be merged into hub firmware.
+Do not merge this into `main` until the bus timing is agreed and a two-node test
+has re-established a known-good baseline. See `can_testing/README.md`.
