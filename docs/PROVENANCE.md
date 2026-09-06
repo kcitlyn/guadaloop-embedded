@@ -39,7 +39,7 @@ Both upstream repositories still exist and were not modified.
 | `experiments/legacy_embedded_25-26/Core/Src/Main_contactor_fsm.c` | `Embedded_25-26/Core/Src/Main.c` | `Power_integration` @ `caae767` |
 | `experiments/vehical_control_unit_superseded/` | `vehical_control_unit/` | `feature-hubunit-setup` @ `31400e4` |
 | `experiments/sensor_packing_prototype/` | loose file `main.c` | handed over directly, origin unrecorded |
-| `experiments/can_testing/` | `CAN_testing-main.zip` | handed over directly, no git history |
+| `experiments/can_testing/` | `github.com/pradyun0414/CAN_testing` | **`can-testing` branch only** — see below |
 | `gui/` | repository root | GUI `main` @ `d07491e` |
 
 `printing` was chosen as the source for `firmware/` because it is the most recent
@@ -103,3 +103,31 @@ Content was not edited. Three structural changes were unavoidable:
 
 Together these were ~125 MB of the ~215 MB originally tracked. All of it still
 exists in the upstream repositories if anyone ever needs a specific prebuilt `.elf`.
+
+## The `can-testing` branch
+
+CAN bring-up is deliberately kept off `main`. The work is unfinished and the three
+test projects are not consistent with each other.
+
+Source: `github.com/pradyun0414/CAN_testing` @ `ac4b167` (2026-04-16).
+Verified byte-identical to the `CAN_testing-main.zip` copy that was handed over,
+so nothing diverged — but the upstream repo carries the git history the zip did
+not, and that history is what shows the bring-up is incomplete.
+
+| Author | Commits |
+|---|---|
+| advaithiyer | 7 |
+| Raj Mhetar | 1 |
+| pradyun0414 | 1 |
+
+Key commits:
+
+| SHA | Date | Message |
+|---|---|---|
+| `497ca56` | 2025-10-12 | THIS CODE WORKS — make sure both MCUs are connected to GND line, 3.3 doesn't matter |
+| `da81fdf` | 2025-11-16 | 1 sender 2 receiver code (yet to test) |
+| `ac4b167` | 2026-04-16 | updated clock settings and debug code for can testing a (sender) |
+
+`ac4b167` changed board A's clock tree and CAN bit timing and touched no other
+project, which desynchronised it from B and C after the last verified test. Full
+analysis in `experiments/can_testing/README.md` on that branch.

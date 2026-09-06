@@ -43,7 +43,24 @@ and no acknowledging node fails, and CubeMX's default `Error_Handler()` is an
 infinite loop with interrupts disabled — so the board appears dead. Whoever hit
 this diagnosed it correctly.
 
-Working CAN code lives in `experiments/can_testing/` and has not been brought over.
+Working CAN code lives on the **`can-testing` branch**, not on `main`, and has
+not been brought over. It is not ready: its three boards disagree on bit timing.
+
+`propulsion_control_unit/Core/Src/can.c` is the most complete CAN setup on this
+branch and gets the hard part right — it enables **CAN1's clock alongside CAN2**,
+which is the trap above. Its timing (prescaler 6, BS1 11 TQ, BS2 2 TQ on a 42 MHz
+APB1) works out to 500 kbit/s at an 87.5%-ish sample point, matching the newest
+bench sender.
+
+What it still lacks, and why nothing would arrive even if started:
+
+- no `HAL_CAN_ConfigFilter()` — bxCAN rejects every frame until a filter is
+  configured, so `CAN2_RX0_IRQHandler` would never fire
+- no `HAL_CAN_Start()`
+- no `HAL_CAN_ActivateNotification()`
+
+The NVIC interrupt is enabled and the ISR exists, which makes this look more
+finished than it is.
 
 That port is the next real piece of work. When it happens, note that on bxCAN
 **CAN1 is the master** — it owns the shared filter bank block. Configuring CAN2

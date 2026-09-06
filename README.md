@@ -17,7 +17,7 @@ branch, author, date and commit SHA behind every directory.
 
 ```
 firmware/       The five ECUs that go on the pod. This is the target architecture.
-experiments/    Bench work, bring-up projects, and superseded variants.
+experiments/    Bench work, sensor rigs, and superseded variants.
 gui/            React dashboard + Express serial bridge + MongoDB logging.
 docs/           Provenance and repo conventions.
 ```
@@ -40,7 +40,6 @@ docs/           Provenance and repo conventions.
 
 | Directory | What it is |
 |---|---|
-| `can_testing/` | Three CubeIDE projects that got a CAN frame between boards. **The only proven CAN traffic in the codebase.** |
 | `center_hub_variants/` | Two center-hub firmwares that diverged from the one in `firmware/`. Read the README there before touching center hub. |
 | `hall_effect_f411/` | Standalone Hall calibration rig. **Different MCU (STM32F411RE)** — does not drop into a hub project as-is. |
 | `sensor_packing_prototype/` | Plain-C bit-packing prototype. No HAL, compiles with `gcc`, runs on your laptop. |
@@ -125,10 +124,11 @@ These came with the code. They are written down so nobody rediscovers them.
    the guards but no averaging. Neither is a superset. Details in
    `experiments/center_hub_variants/README.md`.
 
-2. **The CAN test boards agree on 500 kbit/s but not on where they sample the bit.**
-   Board A samples at 85.7%, boards B and C at 60%. They interoperate on a short
-   bench harness; that margin shrinks on a full-length pod loom. Details in
-   `experiments/can_testing/README.md`.
+2. **CAN bring-up is unfinished and lives on the `can-testing` branch, not here.**
+   The three test boards all reach 500 kbit/s but sample the bit at 85.7% (A)
+   versus 60% (B and C) — the newest upstream commit changed board A's timing
+   alone, after the last verified test. The set has never been checked as a whole.
+   `git checkout can-testing` and read its README before using any of it.
 
 3. **Padded telemetry is indistinguishable from real readings.** Center hub emits
    10 temperature and 12 Hall values but only 3 of each are real sensors — the
@@ -138,8 +138,10 @@ These came with the code. They are written down so nobody rediscovers them.
 4. **`firmware/vehicle_control_unit/contributed/` does not build.** It needs three
    headers that exist nowhere in this repo. See the README in that directory.
 
-5. **No firmware on the pod transmits CAN.** `can_testing/` proves the peripheral
-   works; no hub or control unit uses it yet. Telemetry today is ASCII over USB serial.
+5. **No firmware on the pod transmits CAN.** Four units call `MX_CAN2_Init()`;
+   none calls `HAL_CAN_Start()`, and none configures a receive filter — on bxCAN,
+   no filter means every frame is rejected, so the RX interrupt would never fire
+   even once started. Telemetry today is ASCII over USB serial.
 
 6. **The GUI's CI workflow no longer runs.** `gui/.github/workflows/build-deploy.yml`
    came from the GUI repo root. GitHub only reads `.github/` at the *repository*
