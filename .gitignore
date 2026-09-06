@@ -16,7 +16,10 @@ Release/
 # ─── Eclipse workspace state ────────────────────────────────────────────────
 # Per-machine. Contains indexes, build logs and window layout — not source.
 .metadata/
+# Debug launch configs are per-project and workspace-relative, so they are kept
+# where a teammate committed one; ignore only stray ones.
 *.launch
+!**/CAN_TESTING_*/*.launch
 RemoteSystemsTempFiles/
 .recommenders/
 
@@ -43,3 +46,8 @@ gui/guad-gui/.eslintcache
 Thumbs.db
 *.swp
 *~
+
+# ─── Stray workspace-level Eclipse project ──────────────────────────────────
+# CubeIDE drops a bare .project here if the repo ROOT is imported as a project.
+# Import the individual projects under firmware/ and experiments/ instead.
+/.project

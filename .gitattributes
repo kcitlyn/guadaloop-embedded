@@ -1,0 +1,17 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Line endings: do not touch them, ever.
+#
+# This repo is worked on from Windows (STM32CubeIDE, PowerShell) and from WSL.
+# Git for Windows defaults to core.autocrlf=true and rewrites files to CRLF on
+# checkout; WSL git usually has it false. With no rules here, each side sees the
+# other's line endings as an edit to every line of every file, and `git pull`
+# fails with "cannot pull with rebase: You have unstaged changes" over 300 files
+# nobody touched.
+#
+# `-text` disables all conversion: the bytes in your working tree are exactly the
+# bytes in the commit, on every platform. That is also what this repo needs for a
+# second reason — it is a consolidation of teammates' work committed unmodified,
+# and normalising line endings would silently rewrite every one of those files.
+#
+# This overrides core.autocrlf, so it works without anyone reconfiguring git.
+* -text
